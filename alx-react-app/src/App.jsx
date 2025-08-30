@@ -22,7 +22,7 @@ function App() {
       <UserProfile 
         name="Alice Johnson" 
         age="25" 
-        bio="Loves hiking, photography, and building cool apps with React." 
+        bio="Loves hiking, photography" 
       />
       <div>
         <a href="https://vite.dev" target="_blank">
