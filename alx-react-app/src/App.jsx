@@ -22,7 +22,7 @@ function App() {
       <UserProfile 
         name="Alice Johnson" 
         age="25" 
-        bio="Loves hiking, photography" 
+        bio="Loves hiking and photography" 
       />
       <div>
         <a href="https://vite.dev" target="_blank">
