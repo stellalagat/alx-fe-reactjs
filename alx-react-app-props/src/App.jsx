@@ -9,7 +9,7 @@ import MainContent from "./components/MainContent";
 import Footer from "./components/Footer";
 import UserProfile from "./components/UserProfile";
 import ProfilePage from "./ProfilePage";
-import UserContent from "./UserContent";
+import UserContext from "./UserContent";
 
 
 
