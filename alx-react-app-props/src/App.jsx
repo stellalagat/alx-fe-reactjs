@@ -9,7 +9,7 @@ import MainContent from "./components/MainContent";
 import Footer from "./components/Footer";
 import UserProfile from "./components/UserProfile";
 import ProfilePage from "./ProfilePage";
-import {UserContent} from "./UserContent";
+import UserContent from "./UserContent";
 
 
 
@@ -29,9 +29,9 @@ function App() {
         bio="Loves hiking and photography" 
       />
       <ProfilePage userData={userData} />
-      <UserContent.Provider value={userData}>
+      <UserContext.Provider value={userData}>
         <ProfilePage/>
-        </UserContent.Provider>
+        </UserContext.Provider>
 
       
       <div>
