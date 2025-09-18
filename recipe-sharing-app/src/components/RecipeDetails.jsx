@@ -5,6 +5,7 @@ import DeleteRecipeButton from './DeleteRecipeButton';
 const RecipeDetails = () => {
   const { id } = useParams();
   const recipe = useRecipeStore((s) => s.recipes.find((r) => r.id === id));
+  state.recipes.find((r) => String(r.id) === String(id))
 
   if (!recipe) {
     return (
@@ -26,6 +27,7 @@ const RecipeDetails = () => {
       <p style={{ marginTop: '12px' }}>
         <Link to="/">Back to list</Link>
       </p>
+       <small>ID: {recipe.id}</small>
     </div>
   );
 };
