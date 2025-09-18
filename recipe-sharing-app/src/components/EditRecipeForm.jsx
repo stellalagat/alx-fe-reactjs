@@ -8,8 +8,8 @@ const EditRecipeForm = () => {
   const updateRecipe = useRecipeStore((s) => s.updateRecipe);
   const navigate = useNavigate();
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState('recipe ? recipe.title : ""');
+  const [description, setDescription] = useState('(recipe ? recipe.description : ""');
 
   useEffect(() => {
     if (recipe) {
@@ -23,10 +23,10 @@ const EditRecipeForm = () => {
   }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!title.trim() || !description.trim()) return;
-    updateRecipe(id, { title: title.trim(), description: description.trim() });
+     event.preventDefault();
+    updateRecipe(id, { title, description });
     navigate(`/recipes/${id}`);
+  };
   };
 
   return (
