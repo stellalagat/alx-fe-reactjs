@@ -6,6 +6,7 @@ import './App.css'
 import { getUser } from "./services/githubApi";
 import SearchBar from "./components/SearchBar";
 import UserCard from "./components/UserCard";
+import Search from "./components/Search";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -31,6 +32,10 @@ function App() {
       <SearchBar onSearch={handleSearch} />
       {error && <p style={{ color: "red" }}>{error}</p>}
       {user && <UserCard user={user} />}
+    </div>
+     <div style={{ padding: "2rem" }}>
+      <h1>GitHub User Search</h1>
+      <Search />
     </div>
       <div>
         <a href="https://vite.dev" target="_blank">
