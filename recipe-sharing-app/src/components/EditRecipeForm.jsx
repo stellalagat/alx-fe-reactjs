@@ -47,6 +47,5 @@ const EditRecipeForm = () => {
       <button type="submit">Save</button>
     </form>
   );
-};
 
 export default EditRecipeForm;
