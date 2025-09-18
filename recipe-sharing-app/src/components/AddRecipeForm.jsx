@@ -1,17 +1,21 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecipeStore } from './recipeStore';
 
 const AddRecipeForm = () => {
   const addRecipe = useRecipeStore((state) => state.addRecipe);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!title || !description) return;
-    addRecipe({ id: Date.now(), title, description });
+   if (!title.trim() || !description.trim()) return;
+    const id = Date.now().toString(); // simple unique id
+    addRecipe({ id, title: title.trim(), description: description.trim() });
     setTitle('');
     setDescription('');
+    navigate(`/recipes/${id}`);
   };
 
   return (

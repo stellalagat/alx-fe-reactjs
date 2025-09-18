@@ -3,20 +3,39 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AddRecipeForm from './components/AddRecipeForm';
 import RecipeList from './components/RecipeList';
-
+import RecipeDetails from './components/RecipeDetails';
+import EditRecipeForm from './components/EditRecipeForm';
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-    <div style={{ maxWidth: "600px", margin: "auto", padding: "20px" }}>
-      <h1>🍲 Recipe Sharing App</h1>
-      <AddRecipeForm />
-      <RecipeList />
-    </div>
+      {/* Wrap everything with BrowserRouter */}
+      <BrowserRouter>
+        <div style={{ maxWidth: '800px', margin: 'auto', padding: '20px' }}>
+          <h1>🍲 Recipe Sharing App</h1>
+
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <AddRecipeForm />
+                  <RecipeList />
+                </>
+              }
+            />
+            <Route path="/recipes/:id" element={<RecipeDetails />} />
+            <Route path="/recipes/:id/edit" element={<EditRecipeForm />} />
+          </Routes>
+        </div>
+      </BrowserRouter>
+
+      {/* Keep the Vite starter stuff below */}
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />

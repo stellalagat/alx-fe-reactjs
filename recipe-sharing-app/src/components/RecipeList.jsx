@@ -1,4 +1,6 @@
+import { Link } from 'react-router-dom';
 import { useRecipeStore } from './recipeStore';
+import DeleteRecipeButton from './DeleteRecipeButton';
 
 const RecipeList = () => {
   const recipes = useRecipeStore((state) => state.recipes);
@@ -11,8 +13,13 @@ const RecipeList = () => {
       ) : (
         recipes.map((recipe) => (
           <div key={recipe.id} style={{ border: "1px solid #ccc", padding: "10px", marginBottom: "10px" }}>
-            <h3>{recipe.title}</h3>
-            <p>{recipe.description}</p>
+            <h3>
+             <Link to={`/recipes/${r.id}`}>{r.title}</Link> 
+              </h3>
+               <p>{r.description.length > 140 ? `${r.description.slice(0, 140)}...` : r.description}</p>
+            <Link to={`/recipes/${r.id}/edit`}>Edit</Link>
+            <DeleteRecipeButton id={r.id} />
+           
           </div>
         ))
       )}
