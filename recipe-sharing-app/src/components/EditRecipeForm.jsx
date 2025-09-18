@@ -1,50 +1,50 @@
-import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useRecipeStore } from './recipeStore';
+// src/components/EditRecipeForm.jsx
+import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useRecipeStore } from "./recipeStore";
 
 const EditRecipeForm = () => {
   const { id } = useParams();
-  const recipe = useRecipeStore((s) => s.recipes.find((r) => r.id === id));
-  const updateRecipe = useRecipeStore((s) => s.updateRecipe);
   const navigate = useNavigate();
+  const { recipes, updateRecipe } = useRecipeStore();
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const recipe = recipes.find((r) => r.id === id);
 
-  useEffect(() => {
-    if (recipe) {
-      setTitle(recipe.title);
-      setDescription(recipe.description);
-    }
-  }, [recipe]);
+  const [title, setTitle] = useState(recipe ? recipe.title : "");
+  const [description, setDescription] = useState(
+    recipe ? recipe.description : ""
+  );
 
   if (!recipe) {
-    return <div>Recipe not found.</div>;
+    return <p>Recipe not found!</p>;
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title.trim() || !description.trim()) return;
-    updateRecipe(id, { title: title.trim(), description: description.trim() });
+    updateRecipe(id, { title, description });
     navigate(`/recipes/${id}`);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={{ marginTop: "20px" }}>
       <h2>Edit Recipe</h2>
       <input
         type="text"
+        placeholder="Recipe Title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        style={{ display: 'block', marginBottom: '10px', padding: '8px', width: '100%' }}
+        required
       />
       <textarea
+        placeholder="Recipe Description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        rows={4}
-        style={{ display: 'block', marginBottom: '10px', padding: '8px', width: '100%' }}
+        required
+        style={{ display: "block", marginTop: "10px", width: "100%" }}
       />
-      <button type="submit">Save</button>
+      <button type="submit" style={{ marginTop: "10px" }}>
+        Save Changes
+      </button>
     </form>
   );
 };
