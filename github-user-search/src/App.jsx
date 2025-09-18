@@ -3,11 +3,35 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
+import { getUser } from "./services/githubApi";
+import SearchBar from "./components/SearchBar";
+import UserCard from "./components/UserCard";
+
 function App() {
   const [count, setCount] = useState(0)
 
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState("");
+
+  const handleSearch = async (username) => {
+    try {
+      setError("");
+      const data = await getUser(username);
+      setUser(data);
+    } catch {
+      setError("User not found");
+      setUser(null);
+    }
+  };
+
   return (
     <>
+     <div style={{ padding: "2rem" }}>
+      <h1>GitHub User Search</h1>
+      <SearchBar onSearch={handleSearch} />
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {user && <UserCard user={user} />}
+    </div>
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
