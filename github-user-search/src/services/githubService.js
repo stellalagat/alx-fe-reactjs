@@ -1,21 +1,19 @@
 import axios from "axios";
 
-const BASE_URL = "https://api.github.com";
-
-// Fetch a single user by username
-export const fetchUserData = async (username) => {
+// ✅ Fetch a single user by username
+export const getUser = async (username) => {
   try {
-    const response = await axios.get(`${BASE_URL}/users/${username}`);
+    const response = await axios.get(`https://api.github.com/users/${username}`);
     return response.data;
   } catch (error) {
     throw error;
   }
 };
 
-// Advanced user search with filters (username, location, minRepos)
+// ✅ Advanced search with extra filters
 export const searchUsers = async ({ username, location, minRepos }) => {
   try {
-    // Build query string dynamically
+    // build query string
     let query = username ? `${username}` : "";
 
     if (location) {
@@ -23,12 +21,15 @@ export const searchUsers = async ({ username, location, minRepos }) => {
     }
 
     if (minRepos) {
-      query += `+repos:>${minRepos}`;
+      query += `+repos:>=${minRepos}`;
     }
 
-    // ✅ Important: include the /search/users endpoint
-    const response = await axios.get(`${BASE_URL}/search/users?q=${query}`);
-    return response.data;
+    // GitHub Search API endpoint
+    const response = await axios.get(
+      `https://api.github.com/search/users?q=${query}`
+    );
+
+    return response.data.items; // returns list of matching users
   } catch (error) {
     throw error;
   }
