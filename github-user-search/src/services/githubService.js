@@ -12,7 +12,7 @@ export const fetchUserData = async (username) => {
   }
 };
 
-// Advanced user search with filters
+// Advanced user search with filters (username, location, minRepos)
 export const searchUsers = async ({ username, location, minRepos }) => {
   try {
     // Build query string dynamically
@@ -26,6 +26,7 @@ export const searchUsers = async ({ username, location, minRepos }) => {
       query += `+repos:>${minRepos}`;
     }
 
+    // ✅ Important: include the /search/users endpoint
     const response = await axios.get(`${BASE_URL}/search/users?q=${query}`);
     return response.data;
   } catch (error) {
