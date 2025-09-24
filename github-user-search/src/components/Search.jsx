@@ -1,60 +1,77 @@
 import { useState } from "react";
-import { fetchUserData } from "../services/githubService";
+import { searchUsers } from "../services/githubService";
 
-function Search() {
-  const [input, setInput] = useState("");
-  const [user, setUser] = useState(null);
+export default function Search() {
+  const [query, setQuery] = useState("");
+  const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!query) return;
 
     setLoading(true);
     setError("");
-    setUser(null);
+    setUsers([]);
 
     try {
-      const data = await fetchUserData(input.trim());
-      setUser(data);
-    } catch {
-      setError("Looks like we cant find the user");
+      const results = await searchUsers(query);
+      setUsers(results.items || []); // GitHub search API returns { items: [] }
+    } catch (err) {
+      setError("Something went wrong while fetching users.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{ textAlign: "center", marginTop: "2rem" }}>
-      {/* Search Form */}
-      <form onSubmit={handleSubmit} style={{ marginBottom: "1rem" }}>
+    <div className="p-6 max-w-2xl mx-auto">
+      <form onSubmit={handleSearch} className="flex gap-2 mb-6">
         <input
           type="text"
-          placeholder="Enter GitHub username"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          style={{ padding: "0.5rem", marginRight: "0.5rem" }}
+          placeholder="Search GitHub users..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          className="flex-1 border rounded-lg px-3 py-2"
         />
-        <button type="submit" style={{ padding: "0.5rem 1rem" }}>
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+        >
           Search
         </button>
       </form>
 
-      {/* Conditional Rendering */}
       {loading && <p>Loading...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {user && (
-        <div style={{ border: "1px solid #ddd", padding: "1rem", borderRadius: "5px" }}>
-          <img src={user.avatar_url} alt={user.login} width="100" />
-          <h2>{user.name || user.login}</h2>
-          <a href={user.html_url} target="_blank" rel="noreferrer">
-            View Profile
-          </a>
-        </div>
-      )}
+      {error && <p className="text-red-600">{error}</p>}
+
+      {/* ✅ Render multiple results with map */}
+      <div className="grid gap-4">
+        {users.map((user) => (
+          <div
+            key={user.id}
+            className="p-4 border rounded-lg flex items-center gap-4"
+          >
+            <img
+              src={user.avatar_url}
+              alt={user.login}
+              className="w-12 h-12 rounded-full"
+            />
+            <div>
+              <h2 className="font-semibold">{user.login}</h2>
+              <a
+                href={user.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 underline"
+              >
+                View Profile
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
-
-export default Search;
