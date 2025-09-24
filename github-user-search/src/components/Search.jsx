@@ -5,86 +5,65 @@ export default function Search() {
   const [username, setUsername] = useState("");
   const [location, setLocation] = useState("");
   const [minRepos, setMinRepos] = useState("");
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState([]);
   const [error, setError] = useState("");
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
-    setUsers([]);
-
     try {
-      const results = await searchUsers({ username, location, minRepos });
-      setUsers(results.items || []);
+      setError("");
+      const data = await searchUsers({ username, location, minRepos });
+      setResults(data.items || []); // GitHub returns results in `items`
     } catch (err) {
-      setError("Something went wrong while fetching users.");
-    } finally {
-      setLoading(false);
+      setError("Failed to fetch users. Try again.");
+      setResults([]);
     }
   };
 
   return (
-    <div className="p-6 max-w-3xl mx-auto">
-      <form onSubmit={handleSearch} className="grid gap-4 md:grid-cols-3 mb-6">
+    <div style={{ padding: "1rem" }}>
+      <form onSubmit={handleSearch} style={{ marginBottom: "1rem" }}>
         <input
           type="text"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="border rounded-lg px-3 py-2"
+          style={{ marginRight: "0.5rem" }}
         />
         <input
           type="text"
           placeholder="Location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          className="border rounded-lg px-3 py-2"
+          style={{ marginRight: "0.5rem" }}
         />
         <input
           type="number"
           placeholder="Min Repos"
           value={minRepos}
           onChange={(e) => setMinRepos(e.target.value)}
-          className="border rounded-lg px-3 py-2"
+          style={{ marginRight: "0.5rem" }}
         />
-        <button
-          type="submit"
-          className="col-span-3 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-        >
-          Search
-        </button>
+        <button type="submit">Search</button>
       </form>
 
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-red-600">{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <div className="grid gap-4">
-        {users.map((user) => (
-          <div
-            key={user.id}
-            className="p-4 border rounded-lg flex items-center gap-4"
-          >
+      <ul>
+        {results.map((user) => (
+          <li key={user.id} style={{ marginBottom: "0.5rem" }}>
             <img
               src={user.avatar_url}
               alt={user.login}
-              className="w-12 h-12 rounded-full"
+              width={40}
+              style={{ marginRight: "0.5rem" }}
             />
-            <div>
-              <h2 className="font-semibold">{user.login}</h2>
-              <a
-                href={user.html_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline"
-              >
-                View Profile
-              </a>
-            </div>
-          </div>
+            <a href={user.html_url} target="_blank" rel="noopener noreferrer">
+              {user.login}
+            </a>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
