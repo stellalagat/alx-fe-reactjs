@@ -57,6 +57,12 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+       {/* 👇 Tailwind test block added here */}
+    <div className="flex items-center justify-center h-screen">
+      <h1 className="text-4xl font-bold text-blue-600">
+        🚀 Tailwind is working without npx!
+      </h1>
+    </div>
     </>
   )
 }
