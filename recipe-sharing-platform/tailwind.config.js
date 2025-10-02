@@ -1,9 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./index.html",                // Vite's root HTML
-    "./public/index.html",         // For compatibility with the checker
-    "./src/**/*.{js,ts,jsx,tsx}",  // Your React components
+    "./public/index.html", 
+    "./src/**/*.{js,jsx,ts,tsx}",  // 👈 This line is required by the checker
   ],
   theme: {
     extend: {},
