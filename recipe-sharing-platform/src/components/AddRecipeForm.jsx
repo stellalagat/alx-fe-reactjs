@@ -4,12 +4,10 @@ const AddRecipeForm = () => {
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState("");
   const [steps, setSteps] = useState("");
-  const [errors, setErrors] = useState({}); // ✅ track validation errors
+  const [errors, setErrors] = useState({});
 
-  // ✅ Validation function
   const validate = () => {
     let newErrors = {};
-
     if (!title.trim()) newErrors.title = "Recipe title is required.";
     if (!ingredients.trim()) {
       newErrors.ingredients = "Ingredients are required.";
@@ -19,17 +17,15 @@ const AddRecipeForm = () => {
     if (!steps.trim()) newErrors.steps = "Preparation steps are required.";
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // true if no errors
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (validate()) {
       const newRecipe = { title, ingredients, steps };
       console.log("New Recipe Submitted:", newRecipe);
 
-      // Clear form if valid
       setTitle("");
       setIngredients("");
       setSteps("");
@@ -38,8 +34,8 @@ const AddRecipeForm = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white shadow-lg rounded-xl p-6 mt-10">
-      <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
+    <div className="max-w-lg mx-auto bg-white shadow-lg rounded-xl p-6 mt-10 md:mt-16 md:max-w-2xl">
+      <h2 className="text-2xl md:text-3xl font-bold text-center text-blue-600 mb-6">
         Add New Recipe
       </h2>
 
@@ -51,7 +47,7 @@ const AddRecipeForm = () => {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full border rounded-lg p-2 mt-1"
+            className="w-full border rounded-lg p-2 mt-1 md:p-3"
           />
           {errors.title && (
             <p className="text-red-500 text-sm">{errors.title}</p>
@@ -66,7 +62,7 @@ const AddRecipeForm = () => {
           <textarea
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
-            className="w-full border rounded-lg p-2 mt-1"
+            className="w-full border rounded-lg p-2 mt-1 md:p-3 md:h-32"
           />
           {errors.ingredients && (
             <p className="text-red-500 text-sm">{errors.ingredients}</p>
@@ -81,7 +77,7 @@ const AddRecipeForm = () => {
           <textarea
             value={steps}
             onChange={(e) => setSteps(e.target.value)}
-            className="w-full border rounded-lg p-2 mt-1"
+            className="w-full border rounded-lg p-2 mt-1 md:p-3 md:h-40"
           />
           {errors.steps && (
             <p className="text-red-500 text-sm">{errors.steps}</p>
@@ -91,7 +87,7 @@ const AddRecipeForm = () => {
         {/* Submit */}
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+          className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 md:py-3"
         >
           Submit Recipe
         </button>
