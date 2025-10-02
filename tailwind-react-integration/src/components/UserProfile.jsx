@@ -7,16 +7,16 @@ const UserProfile = () => {
       <img
         src="https://via.placeholder.com/150"
         alt="Profile"
-        className="mx-auto rounded-full w-24 h-24 md:w-36 md:h-36 object-cover"
+        className="mx-auto rounded-full sm:w-24 sm:h-24 md:w-36 md:h-36 object-cover"
       />
 
       {/* Heading */}
-      <h2 className="mt-4 font-semibold text-lg md:text-xl text-gray-800">
+      <h2 className="mt-4 font-semibold sm:text-lg md:text-xl text-gray-800">
         John Doe
       </h2>
 
       {/* Paragraph */}
-      <p className="mt-2 text-sm md:text-base text-gray-600">
+      <p className="mt-2 sm:text-sm md:text-base text-gray-600">
         A passionate developer who loves creating responsive and modern
         applications using React and Tailwind CSS.
       </p>
