@@ -17,8 +17,10 @@ const PostsComponent = () => {
     isError,
     refetch,
   } = useQuery("posts", fetchPosts, {
-    refetchOnWindowFocus: false, // 👈 disables auto refetch on tab focus
-    keepPreviousData: true, // 👈 retains cached data while refetching
+    refetchOnWindowFocus: false, // don’t refetch when tab refocuses
+    keepPreviousData: true,      // retain cached data during refetch
+    cacheTime: 1000 * 60 * 5,    // 🕒 keep cache for 5 minutes
+    staleTime: 1000 * 30,        // ⏳ data stays “fresh” for 30 seconds
   });
 
   if (isLoading) return <p>Loading posts...</p>;
