@@ -2,44 +2,29 @@
 import React, { useState } from "react";
 
 const RegistrationForm = () => {
-  // Step 1: Define states for each field
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
-
+  // Separate state variables for controlled inputs
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  // Step 2: Handle input changes (controlled components)
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  // Step 3: Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Basic validation
-    if (!formData.username || !formData.email || !formData.password) {
+    if (!username || !email || !password) {
       setError("All fields are required!");
       return;
     }
 
     setError("");
-    console.log("Form submitted:", formData);
-    alert(`Registration successful for ${formData.username}`);
+    console.log("Form submitted:", { username, email, password });
+    alert(`Registration successful for ${username}`);
 
-    // Optional: Clear form after submission
-    setFormData({
-      username: "",
-      email: "",
-      password: "",
-    });
+    // Reset form
+    setUsername("");
+    setEmail("");
+    setPassword("");
   };
 
   return (
@@ -53,8 +38,8 @@ const RegistrationForm = () => {
         <input
           type="text"
           name="username"
-          value={formData.username}
-          onChange={handleChange}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           style={styles.input}
           placeholder="Enter your username"
         />
@@ -63,8 +48,8 @@ const RegistrationForm = () => {
         <input
           type="email"
           name="email"
-          value={formData.email}
-          onChange={handleChange}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           style={styles.input}
           placeholder="Enter your email"
         />
@@ -73,19 +58,21 @@ const RegistrationForm = () => {
         <input
           type="password"
           name="password"
-          value={formData.password}
-          onChange={handleChange}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           style={styles.input}
           placeholder="Enter your password"
         />
 
-        <button type="submit" style={styles.button}>Register</button>
+        <button type="submit" style={styles.button}>
+          Register
+        </button>
       </form>
     </div>
   );
 };
 
-// Simple inline styles for quick setup
+// Basic inline styles
 const styles = {
   container: {
     width: "350px",
