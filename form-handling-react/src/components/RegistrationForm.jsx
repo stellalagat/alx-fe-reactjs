@@ -2,26 +2,42 @@
 import React, { useState } from "react";
 
 const RegistrationForm = () => {
-  // Separate state variables for controlled inputs
+  // Controlled component states
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+
+  // Error state (object form)
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Basic validation
-    if (!username || !email || !password) {
-      setError("All fields are required!");
-      return;
+    // Reset errors first
+    const newErrors = {};
+
+    // ✅ Explicit validation checks
+    if (!username) {
+      newErrors.username = "Username is required";
+    }
+    if (!email) {
+      newErrors.email = "Email is required";
+    }
+    if (!password) {
+      newErrors.password = "Password is required";
     }
 
-    setError("");
+    // Update error state
+    setErrors(newErrors);
+
+    // Stop submission if there are errors
+    if (Object.keys(newErrors).length > 0) return;
+
+    // Otherwise, form is valid
     console.log("Form submitted:", { username, email, password });
     alert(`Registration successful for ${username}`);
 
-    // Reset form
+    // Reset fields
     setUsername("");
     setEmail("");
     setPassword("");
@@ -32,8 +48,6 @@ const RegistrationForm = () => {
       <h2 style={styles.heading}>User Registration</h2>
 
       <form onSubmit={handleSubmit} style={styles.form}>
-        {error && <p style={styles.error}>{error}</p>}
-
         <label style={styles.label}>Username</label>
         <input
           type="text"
@@ -43,6 +57,7 @@ const RegistrationForm = () => {
           style={styles.input}
           placeholder="Enter your username"
         />
+        {errors.username && <p style={styles.error}>{errors.username}</p>}
 
         <label style={styles.label}>Email</label>
         <input
@@ -53,6 +68,7 @@ const RegistrationForm = () => {
           style={styles.input}
           placeholder="Enter your email"
         />
+        {errors.email && <p style={styles.error}>{errors.email}</p>}
 
         <label style={styles.label}>Password</label>
         <input
@@ -63,6 +79,7 @@ const RegistrationForm = () => {
           style={styles.input}
           placeholder="Enter your password"
         />
+        {errors.password && <p style={styles.error}>{errors.password}</p>}
 
         <button type="submit" style={styles.button}>
           Register
@@ -72,7 +89,7 @@ const RegistrationForm = () => {
   );
 };
 
-// Basic inline styles
+// Basic inline styling
 const styles = {
   container: {
     width: "350px",
@@ -114,8 +131,8 @@ const styles = {
   },
   error: {
     color: "red",
-    textAlign: "center",
-    marginBottom: "10px",
+    fontSize: "0.9em",
+    marginTop: "5px",
   },
 };
 
