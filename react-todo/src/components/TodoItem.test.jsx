@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import TodoItem from '../components/TodoItem';
+import TodoItem from './TodoItem';
 
 test('renders todo text', () => {
   const todo = { id: 1, text: 'Learn React Testing', completed: false };
