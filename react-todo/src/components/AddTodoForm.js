@@ -12,21 +12,23 @@ const AddTodoForm = ({ onAddTodo }) => {
     }
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSubmit(e);
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="add-todo-form" data-testid="add-todo-form">
+    <form onSubmit={handleSubmit} className="add-todo-form">
       <input
         type="text"
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
+        onKeyPress={handleKeyPress}
         placeholder="Add a new todo..."
         className="todo-input"
-        data-testid="todo-input"
       />
-      <button 
-        type="submit" 
-        className="add-button"
-        data-testid="add-button"
-      >
+      <button type="submit" className="add-button">
         Add Todo
       </button>
     </form>

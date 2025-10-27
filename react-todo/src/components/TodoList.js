@@ -32,14 +32,14 @@ const TodoList = () => {
   };
 
   return (
-    <div className="todo-list" data-testid="todo-list">
+    <div className="todo-list">
       <h1>Todo List</h1>
       <AddTodoForm onAddTodo={addTodo} />
       <div className="todos-container">
         {todos.length === 0 ? (
           <p className="no-todos">No todos yet. Add one above!</p>
         ) : (
-          <ul className="todos">
+          <ul>
             {todos.map(todo => (
               <TodoItem
                 key={todo.id}
