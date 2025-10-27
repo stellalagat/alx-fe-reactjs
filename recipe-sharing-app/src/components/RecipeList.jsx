@@ -6,6 +6,8 @@ const RecipeList = () => {
   const filteredRecipes = useRecipeStore((state) => state.filteredRecipes)
   const searchTerm = useRecipeStore((state) => state.searchTerm)
   const removeRecipe = useRecipeStore((state) => state.removeRecipe)
+  const toggleFavorite = useRecipeStore((state) => state.toggleFavorite)
+  const isFavorite = useRecipeStore((state) => state.isFavorite)
 
   const displayRecipes = filteredRecipes
   const hasSearchTerm = searchTerm.trim() !== ''
@@ -39,12 +41,22 @@ const RecipeList = () => {
                       {recipe.title}
                     </Link>
                   </h3>
-                  <button 
-                    onClick={() => removeRecipe(recipe.id)}
-                    className="delete-btn"
-                  >
-                    ×
-                  </button>
+                  <div className="recipe-actions-header">
+                    <button 
+                      onClick={() => toggleFavorite(recipe.id)}
+                      className={`favorite-btn ${isFavorite(recipe.id) ? 'favorited' : ''}`}
+                      title={isFavorite(recipe.id) ? "Remove from favorites" : "Add to favorites"}
+                    >
+                      {isFavorite(recipe.id) ? '❤️' : '🤍'}
+                    </button>
+                    <button 
+                      onClick={() => removeRecipe(recipe.id)}
+                      className="delete-btn"
+                      title="Delete recipe"
+                    >
+                      ×
+                    </button>
+                  </div>
                 </div>
                 
                 <p className="recipe-description">{recipe.description}</p>

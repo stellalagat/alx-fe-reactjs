@@ -6,6 +6,8 @@ import RecipeDetails from './components/RecipeDetails'
 import EditRecipeForm from './components/EditRecipeForm'
 import SearchBar from './components/SearchBar'
 import FilterPanel from './components/FilterPanel'
+import FavoritesList from './components/FavoritesList'
+import RecommendationsList from './components/RecommendationsList'
 import './App.css'
 
 function App() {
@@ -20,12 +22,14 @@ function App() {
         <main className="app-main">
           <Routes>
             <Route path="/" element={
-              <div className="container">
-                <div className="form-section">
+              <div className="app-layout">
+                <div className="sidebar">
                   <AddRecipeForm />
+                  <FavoritesList />
+                  <RecommendationsList />
                 </div>
                 
-                <div className="list-section">
+                <div className="main-content">
                   <div className="search-filters-container">
                     <SearchBar />
                     <FilterPanel />

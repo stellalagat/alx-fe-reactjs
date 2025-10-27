@@ -8,6 +8,8 @@ const RecipeDetails = () => {
     state.recipes.find(recipe => recipe.id === parseInt(id))
   )
   const deleteRecipe = useRecipeStore(state => state.deleteRecipe)
+  const toggleFavorite = useRecipeStore(state => state.toggleFavorite)
+  const isFavorite = useRecipeStore(state => state.isFavorite)
 
   if (!recipe) {
     return (
@@ -28,11 +30,21 @@ const RecipeDetails = () => {
     }
   }
 
+  const handleToggleFavorite = () => {
+    toggleFavorite(recipe.id)
+  }
+
   return (
     <div className="recipe-details">
       <div className="details-header">
         <Link to="/" className="back-link">← Back to Recipes</Link>
         <div className="action-buttons">
+          <button 
+            onClick={handleToggleFavorite}
+            className={`favorite-btn-large ${isFavorite(recipe.id) ? 'favorited' : ''}`}
+          >
+            {isFavorite(recipe.id) ? '❤️ Remove from Favorites' : '🤍 Add to Favorites'}
+          </button>
           <Link to={`/edit/${recipe.id}`} className="edit-btn">
             Edit Recipe
           </Link>
@@ -43,8 +55,32 @@ const RecipeDetails = () => {
       </div>
 
       <div className="recipe-content">
-        <h1>{recipe.title}</h1>
+        <div className="recipe-title-section">
+          <h1>{recipe.title}</h1>
+          {isFavorite(recipe.id) && (
+            <span className="favorite-badge">❤️ Favorite</span>
+          )}
+        </div>
+        
         <p className="recipe-description">{recipe.description}</p>
+        
+        <div className="recipe-meta-details">
+          <div className="meta-detail">
+            <strong>Category:</strong> {recipe.category}
+          </div>
+          <div className="meta-detail">
+            <strong>Difficulty:</strong> {recipe.difficulty}
+          </div>
+          <div className="meta-detail">
+            <strong>Prep Time:</strong> {recipe.prepTime} minutes
+          </div>
+          <div className="meta-detail">
+            <strong>Cook Time:</strong> {recipe.cookTime} minutes
+          </div>
+          <div className="meta-detail">
+            <strong>Total Time:</strong> {recipe.prepTime + recipe.cookTime} minutes
+          </div>
+        </div>
         
         <div className="details-section">
           <h2>Ingredients</h2>
