@@ -1,28 +1,39 @@
 import React from 'react'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import AddRecipeForm from './components/AddRecipeForm'
 import RecipeList from './components/RecipeList'
+import RecipeDetails from './components/RecipeDetails'
+import EditRecipeForm from './components/EditRecipeForm'
 import './App.css'
 
 function App() {
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>🍳 Recipe Sharing App</h1>
-        <p>Share and discover amazing recipes with the community</p>
-      </header>
-      
-      <main className="app-main">
-        <div className="container">
-          <div className="form-section">
-            <AddRecipeForm />
-          </div>
-          
-          <div className="list-section">
-            <RecipeList />
-          </div>
-        </div>
-      </main>
-    </div>
+    <Router>
+      <div className="app">
+        <header className="app-header">
+          <h1>🍳 Recipe Sharing App</h1>
+          <p>Share and discover amazing recipes with the community</p>
+        </header>
+        
+        <main className="app-main">
+          <Routes>
+            <Route path="/" element={
+              <div className="container">
+                <div className="form-section">
+                  <AddRecipeForm />
+                </div>
+                
+                <div className="list-section">
+                  <RecipeList />
+                </div>
+              </div>
+            } />
+            <Route path="/recipe/:id" element={<RecipeDetails />} />
+            <Route path="/edit/:id" element={<EditRecipeForm />} />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   )
 }
 
