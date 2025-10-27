@@ -1,35 +1,35 @@
-// src/components/RecipeList.jsx
-import { useRecipeStore } from "./recipeStore";
-import { Link } from "react-router-dom";
+import useRecipeStore from '../store/recipeStore'
 
 const RecipeList = () => {
-  const recipes = useRecipeStore((state) => state.recipes);
-  const favorites = useRecipeStore((state) => state.favorites);
-  const addFavorite = useRecipeStore((state) => state.addFavorite);
-  const removeFavorite = useRecipeStore((state) => state.removeFavorite);
+  const recipes = useRecipeStore((state) => state.recipes)
+  const removeRecipe = useRecipeStore((state) => state.removeRecipe)
 
   return (
-    <div>
-      <h2>📖 Recipe List</h2>
+    <div className="recipe-list">
+      <h2>Recipes ({recipes.length})</h2>
       {recipes.length === 0 ? (
-        <p>No recipes yet. Add some!</p>
+        <p>No recipes yet. Add your first recipe!</p>
       ) : (
         recipes.map((recipe) => (
-          <div key={recipe.id} style={{ marginBottom: "10px" }}>
-            <h3>
-              <Link to={`/recipes/${recipe.id}`}>{recipe.title}</Link>
-            </h3>
+          <div key={recipe.id} className="recipe-card">
+            <div className="recipe-header">
+              <h3>{recipe.title}</h3>
+              <button 
+                onClick={() => removeRecipe(recipe.id)}
+                className="delete-btn"
+              >
+                ×
+              </button>
+            </div>
             <p>{recipe.description}</p>
-            {favorites.includes(recipe.id) ? (
-              <button onClick={() => removeFavorite(recipe.id)}>💔 Remove Favorite</button>
-            ) : (
-              <button onClick={() => addFavorite(recipe.id)}>❤️ Add Favorite</button>
-            )}
+            <div className="recipe-meta">
+              <small>ID: {recipe.id}</small>
+            </div>
           </div>
         ))
       )}
     </div>
-  );
-};
+  )
+}
 
-export default RecipeList;
+export default RecipeList
