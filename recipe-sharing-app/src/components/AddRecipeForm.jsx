@@ -6,52 +6,85 @@ const AddRecipeForm = () => {
   const addRecipe = useRecipeStore((state) => state.addRecipe)
   const navigate = useNavigate()
   
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [ingredients, setIngredients] = useState([''])
-  const [instructions, setInstructions] = useState('')
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    ingredients: [''],
+    instructions: '',
+    prepTime: '',
+    cookTime: '',
+    difficulty: 'Easy',
+    category: 'Uncategorized'
+  })
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+  }
 
   const handleIngredientChange = (index, value) => {
-    const newIngredients = [...ingredients]
+    const newIngredients = [...formData.ingredients]
     newIngredients[index] = value
-    setIngredients(newIngredients)
+    setFormData(prev => ({
+      ...prev,
+      ingredients: newIngredients
+    }))
   }
 
   const addIngredient = () => {
-    setIngredients([...ingredients, ''])
+    setFormData(prev => ({
+      ...prev,
+      ingredients: [...prev.ingredients, '']
+    }))
   }
 
   const removeIngredient = (index) => {
-    if (ingredients.length > 1) {
-      setIngredients(ingredients.filter((_, i) => i !== index))
+    if (formData.ingredients.length > 1) {
+      setFormData(prev => ({
+        ...prev,
+        ingredients: prev.ingredients.filter((_, i) => i !== index)
+      }))
     }
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
     
-    if (!title.trim() || !description.trim()) {
+    if (!formData.title.trim() || !formData.description.trim()) {
       alert('Please fill in both title and description')
       return
     }
 
     // Filter out empty ingredients
-    const filteredIngredients = ingredients.filter(ingredient => ingredient.trim() !== '')
+    const filteredIngredients = formData.ingredients.filter(ingredient => ingredient.trim() !== '')
 
     const newRecipe = {
-      title: title.trim(),
-      description: description.trim(),
+      title: formData.title.trim(),
+      description: formData.description.trim(),
       ingredients: filteredIngredients.length > 0 ? filteredIngredients : ['No ingredients listed'],
-      instructions: instructions.trim()
+      instructions: formData.instructions.trim(),
+      prepTime: parseInt(formData.prepTime) || 0,
+      cookTime: parseInt(formData.cookTime) || 0,
+      difficulty: formData.difficulty,
+      category: formData.category
     }
 
     addRecipe(newRecipe)
     
     // Reset form
-    setTitle('')
-    setDescription('')
-    setIngredients([''])
-    setInstructions('')
+    setFormData({
+      title: '',
+      description: '',
+      ingredients: [''],
+      instructions: '',
+      prepTime: '',
+      cookTime: '',
+      difficulty: 'Easy',
+      category: 'Uncategorized'
+    })
 
     // Navigate to home to see the new recipe in the list
     navigate('/')
@@ -62,12 +95,13 @@ const AddRecipeForm = () => {
       <h2>Add New Recipe</h2>
       
       <div className="form-group">
-        <label htmlFor="title">Recipe Title</label>
+        <label htmlFor="title">Recipe Title *</label>
         <input
           type="text"
           id="title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          name="title"
+          value={formData.title}
+          onChange={handleInputChange}
           placeholder="Enter recipe title"
           className="form-input"
           required
@@ -75,11 +109,12 @@ const AddRecipeForm = () => {
       </div>
       
       <div className="form-group">
-        <label htmlFor="description">Description</label>
+        <label htmlFor="description">Description *</label>
         <textarea
           id="description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          name="description"
+          value={formData.description}
+          onChange={handleInputChange}
           placeholder="Describe your recipe"
           className="form-textarea"
           rows="3"
@@ -87,9 +122,76 @@ const AddRecipeForm = () => {
         />
       </div>
 
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="category">Category</label>
+          <select
+            id="category"
+            name="category"
+            value={formData.category}
+            onChange={handleInputChange}
+            className="form-select"
+          >
+            <option value="Uncategorized">Uncategorized</option>
+            <option value="Main Course">Main Course</option>
+            <option value="Dessert">Dessert</option>
+            <option value="Appetizer">Appetizer</option>
+            <option value="Salad">Salad</option>
+            <option value="Soup">Soup</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Beverage">Beverage</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="difficulty">Difficulty</label>
+          <select
+            id="difficulty"
+            name="difficulty"
+            value={formData.difficulty}
+            onChange={handleInputChange}
+            className="form-select"
+          >
+            <option value="Easy">Easy</option>
+            <option value="Medium">Medium</option>
+            <option value="Hard">Hard</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="form-row">
+        <div className="form-group">
+          <label htmlFor="prepTime">Prep Time (minutes)</label>
+          <input
+            type="number"
+            id="prepTime"
+            name="prepTime"
+            value={formData.prepTime}
+            onChange={handleInputChange}
+            placeholder="0"
+            min="0"
+            className="form-input"
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="cookTime">Cook Time (minutes)</label>
+          <input
+            type="number"
+            id="cookTime"
+            name="cookTime"
+            value={formData.cookTime}
+            onChange={handleInputChange}
+            placeholder="0"
+            min="0"
+            className="form-input"
+          />
+        </div>
+      </div>
+
       <div className="form-group">
-        <label>Ingredients</label>
-        {ingredients.map((ingredient, index) => (
+        <label>Ingredients *</label>
+        {formData.ingredients.map((ingredient, index) => (
           <div key={index} className="ingredient-input-group">
             <input
               type="text"
@@ -102,7 +204,7 @@ const AddRecipeForm = () => {
               type="button"
               onClick={() => removeIngredient(index)}
               className="remove-ingredient-btn"
-              disabled={ingredients.length === 1}
+              disabled={formData.ingredients.length === 1}
             >
               ×
             </button>
@@ -121,8 +223,9 @@ const AddRecipeForm = () => {
         <label htmlFor="instructions">Instructions</label>
         <textarea
           id="instructions"
-          value={instructions}
-          onChange={(e) => setInstructions(e.target.value)}
+          name="instructions"
+          value={formData.instructions}
+          onChange={handleInputChange}
           placeholder="Provide step-by-step instructions"
           className="form-textarea"
           rows="5"

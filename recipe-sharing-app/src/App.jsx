@@ -4,6 +4,8 @@ import AddRecipeForm from './components/AddRecipeForm'
 import RecipeList from './components/RecipeList'
 import RecipeDetails from './components/RecipeDetails'
 import EditRecipeForm from './components/EditRecipeForm'
+import SearchBar from './components/SearchBar'
+import FilterPanel from './components/FilterPanel'
 import './App.css'
 
 function App() {
@@ -24,6 +26,10 @@ function App() {
                 </div>
                 
                 <div className="list-section">
+                  <div className="search-filters-container">
+                    <SearchBar />
+                    <FilterPanel />
+                  </div>
                   <RecipeList />
                 </div>
               </div>

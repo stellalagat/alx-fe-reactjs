@@ -3,22 +3,34 @@ import useRecipeStore from './recipeStore'
 
 const RecipeList = () => {
   const recipes = useRecipeStore((state) => state.recipes)
-  const removeRecipe = useRecipeStore((state) => state.removeRecipe) // Keeping existing functionality
+  const filteredRecipes = useRecipeStore((state) => state.filteredRecipes)
+  const searchTerm = useRecipeStore((state) => state.searchTerm)
+  const removeRecipe = useRecipeStore((state) => state.removeRecipe)
+
+  const displayRecipes = filteredRecipes
+  const hasSearchTerm = searchTerm.trim() !== ''
 
   return (
     <div className="recipe-list">
       <div className="list-header">
-        <h2>All Recipes ({recipes.length})</h2>
+        <h2>
+          {hasSearchTerm ? `Search Results (${displayRecipes.length})` : `All Recipes (${recipes.length})`}
+        </h2>
+        {hasSearchTerm && displayRecipes.length === 0 && (
+          <div className="no-results">
+            <p>No recipes found matching your search. Try different keywords or clear filters.</p>
+          </div>
+        )}
       </div>
       
-      {recipes.length === 0 ? (
+      {displayRecipes.length === 0 && !hasSearchTerm ? (
         <div className="empty-state">
           <h3>No recipes yet</h3>
           <p>Get started by adding your first recipe!</p>
         </div>
       ) : (
         <div className="recipes-grid">
-          {recipes.map((recipe) => (
+          {displayRecipes.map((recipe) => (
             <div key={recipe.id} className="recipe-card">
               <div className="recipe-card-content">
                 <div className="recipe-header">
@@ -36,6 +48,18 @@ const RecipeList = () => {
                 </div>
                 
                 <p className="recipe-description">{recipe.description}</p>
+                
+                <div className="recipe-meta-info">
+                  <span className="meta-item">
+                    <strong>Category:</strong> {recipe.category}
+                  </span>
+                  <span className="meta-item">
+                    <strong>Difficulty:</strong> {recipe.difficulty}
+                  </span>
+                  <span className="meta-item">
+                    <strong>Time:</strong> {recipe.prepTime + recipe.cookTime} min
+                  </span>
+                </div>
                 
                 {recipe.ingredients && (
                   <div className="recipe-preview">
